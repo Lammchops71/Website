@@ -1,9 +1,9 @@
 ---
-title: "SQL"
+title: "SQL PRACTICE"
 output: html_document
 ---
-
-## Filtering Columns and Rows
+*****
+## **September 5th, 2017 - Filtering Columns and Rows**
 
 With SQL, you can filter columns with SELECT and rows with WHERE. Let's try an example with the Lahman baseball database. First, we need to laod the appropriate packages. 
 
@@ -11,7 +11,7 @@ With SQL, you can filter columns with SELECT and rows with WHERE. Let's try an e
 library(Lahman)
 library(sqldf)
 ```
-
+*****
 Now, suppose we would like to see the homerun totals for the 1927 New York Yankees. We could write the following:
 
 ```{r}
@@ -19,5 +19,43 @@ query<-"SELECT playerID,yearID,teamID,HR FROM Batting
 WHERE teamID='NYA' and yearID=1927"
 sqldf(query)
 ```
-
+*****
+## **September 7th, 2017 - R Markdown Operator Practice**
+This is how to find all instances where Yankees have hit more than 50 homeruns:
+```{r}
+query<-"SELECT playerID,yearID,teamID,HR FROM Batting
+WHERE teamID='NYA'and HR >= 40 ORDER BY HR DESC"
+sqldf(query)
+```
+*****
+This is how to find all players with greater than 40 homeruns but less than 60 strikeouts in a season:
+```{r}
+query<-"SELECT playerID,yearID,teamID,HR,SO FROM Batting
+WHERE HR > 40 and SO < 60"
+sqldf(query)
+```
+*****
+This is how to find all Phillies' players who hit more than 30 homeruns in the 1970's:
+```{r}
+query<-"SELECT playerID,yearID,teamID,HR FROM Batting
+WHERE teamID='PHI' and yearID>=1970 and yearID<=1979 and HR > 30"
+sqldf(query)
+```
+*****
+### **Sorting Syntax**
+This is how to find every instance of players have more than 50 homeruns, where the players who have the most are located at the top:
+```{r}
+query<-"SELECT playerID,yearID,teamID,HR FROM Batting
+WHERE HR > 50
+ORDER BY HR DESC"
+sqldf(query)
+```
+*****
+This is how to find all instances of a player striking out less than 10 times and have at least 400 at-bats. The players with the least strikeouts are at the top:
+```{r}
+query<-"SELECT playerID,yearID,teamID,HR,SO,AB FROM Batting
+WHERE SO<10 and AB>400
+ORDER BY SO"
+sqldf(query)
+```
 
