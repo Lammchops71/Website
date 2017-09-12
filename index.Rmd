@@ -3,7 +3,7 @@ title: "SQL PRACTICE"
 output: html_document
 ---
 *****
-## **September 5th, 2017 - Filtering Columns and Rows**
+## **Filtering Columns and Rows**
 
 With SQL, you can filter columns with SELECT and rows with WHERE. Let's try an example with the Lahman baseball database. First, we need to laod the appropriate packages. 
 
@@ -20,7 +20,6 @@ WHERE teamID='NYA' and yearID=1927"
 sqldf(query)
 ```
 *****
-## **September 7th, 2017 - R Markdown Operator Practice**
 This is how to find all instances where Yankees have hit more than 50 homeruns:
 ```{r}
 query<-"SELECT playerID,yearID,teamID,HR FROM Batting
@@ -42,7 +41,9 @@ WHERE teamID='PHI' and yearID>=1970 and yearID<=1979 and HR > 30"
 sqldf(query)
 ```
 *****
-### **Sorting Syntax**
+## **Order By Syntax**
+This portion will explain how to sort results from the queries.
+
 This is how to find every instance of players have more than 50 homeruns, where the players who have the most are located at the top:
 ```{r}
 query<-"SELECT playerID,yearID,teamID,HR FROM Batting

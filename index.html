@@ -121,8 +121,8 @@ $(document).ready(function () {
 
 
 <hr />
-<div id="september-5th-2017---filtering-columns-and-rows" class="section level2">
-<h2><strong>September 5th, 2017 - Filtering Columns and Rows</strong></h2>
+<div id="filtering-columns-and-rows" class="section level2">
+<h2><strong>Filtering Columns and Rows</strong></h2>
 <p>With SQL, you can filter columns with SELECT and rows with WHERE. Let’s try an example with the Lahman baseball database. First, we need to laod the appropriate packages.</p>
 <pre class="r"><code>library(Lahman)
 library(sqldf)</code></pre>
@@ -158,9 +158,6 @@ sqldf(query)</code></pre>
 ## 24 thomamy01   1927    NYA  0
 ## 25  weraju01   1927    NYA  1</code></pre>
 <hr />
-</div>
-<div id="september-7th-2017---r-markdown-operator-practice" class="section level2">
-<h2><strong>September 7th, 2017 - R Markdown Operator Practice</strong></h2>
 <p>This is how to find all instances where Yankees have hit more than 50 homeruns:</p>
 <pre class="r"><code>query&lt;-&quot;SELECT playerID,yearID,teamID,HR FROM Batting
 WHERE teamID='NYA'and HR &gt;= 40 ORDER BY HR DESC&quot;
@@ -246,8 +243,10 @@ sqldf(query)</code></pre>
 ## 8 luzingr01   1978    PHI 35
 ## 9 schmimi01   1979    PHI 45</code></pre>
 <hr />
-<div id="sorting-syntax" class="section level3">
-<h3><strong>Sorting Syntax</strong></h3>
+</div>
+<div id="order-by-syntax" class="section level2">
+<h2><strong>Order By Syntax</strong></h2>
+<p>This portion will explain how to sort results from the queries.</p>
 <p>This is how to find every instance of players have more than 50 homeruns, where the players who have the most are located at the top:</p>
 <pre class="r"><code>query&lt;-&quot;SELECT playerID,yearID,teamID,HR FROM Batting
 WHERE HR &gt; 50
@@ -362,7 +361,6 @@ sqldf(query)</code></pre>
 ## 63 holmeto01   1945    BSN 28  9 636
 ## 64 boudrlo01   1948    CLE 18  9 560
 ## 65 mitchda01   1952    CLE  5  9 511</code></pre>
-</div>
 </div>
 
 
