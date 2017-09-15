@@ -361,6 +361,165 @@ sqldf(query)</code></pre>
 ## 63 holmeto01   1945    BSN 28  9 636
 ## 64 boudrlo01   1948    CLE 18  9 560
 ## 65 mitchda01   1952    CLE  5  9 511</code></pre>
+<hr />
+</div>
+<div id="aggregation" class="section level2">
+<h2><strong>Aggregation</strong></h2>
+<p>This portion will explain how to aggregate data in a query. There are many way to aggregate data including: sum() avg() max() min()</p>
+<p>This is how to find Babe Ruth’s career homerun totals:</p>
+<pre class="r"><code>query&lt;-&quot;SELECT playerID, sum(HR) FROM Batting
+WHERE playerID='ruthba01'
+GROUP BY playerID&quot;
+sqldf(query)</code></pre>
+<pre><code>##   playerID sum(HR)
+## 1 ruthba01     714</code></pre>
+<hr />
+<p>Find the career homerun totals for all players. Limit the display to only those that have a career total of 600 or more. Let’s have the players with the highest total at the top:</p>
+<pre class="r"><code>query&lt;-&quot;SELECT playerID, sum(HR) FROM Batting
+GROUP BY playerID
+HAVING sum(HR)&gt;=600
+ORDER BY sum(HR) DESC&quot;
+sqldf(query)</code></pre>
+<pre><code>##    playerID sum(HR)
+## 1 bondsba01     762
+## 2 aaronha01     755
+## 3  ruthba01     714
+## 4 rodrial01     696
+## 5  mayswi01     660
+## 6 griffke02     630
+## 7 thomeji01     612
+## 8  sosasa01     609</code></pre>
+<hr />
+<p>Find the players who averaged more than 30 homeruns per season over their career. Put those with the highest averages at the top:</p>
+<pre class="r"><code>query&lt;-&quot;SELECT playerID, avg(HR) FROM Batting
+GROUP BY playerID
+HAVING avg(HR)&gt;30
+ORDER BY avg(HR) DESC&quot;
+sqldf(query)</code></pre>
+<pre><code>##     playerID  avg(HR)
+## 1  pujolal01 36.93750
+## 2  bondsba01 34.63636
+## 3  mcgwima01 34.29412
+## 4  kinerra01 33.54545
+## 5  aaronha01 32.82609
+## 6  bryankr01 32.50000
+## 7   ruthba01 32.45455
+## 8   sosasa01 32.05263
+## 9  cabremi01 31.85714
+## 10 belleal01 31.75000
+## 11 rodrial01 31.63636
+## 12 schmimi01 30.44444
+## 13 abreujo02 30.33333</code></pre>
+<hr />
+</div>
+<div id="using-joins-to-utilize-multiple-tables" class="section level2">
+<h2><strong>Using Joins to Utilize Multiple Tables</strong></h2>
+<p>This portion will illustrate how to join data from multiple data tables into one query.</p>
+<p>This is how to create a query with Babe Ruth’s full name:</p>
+<pre class="r"><code>query&lt;-&quot;SELECT nameFirst, nameLast, teamID, yearID, HR 
+FROM Batting INNER JOIN Master
+ON Batting.playerID=Master.playerID
+WHERE Batting.playerID='ruthba01'&quot;
+sqldf(query)</code></pre>
+<pre><code>##    nameFirst nameLast teamID yearID HR
+## 1       Babe     Ruth    BOS   1914  0
+## 2       Babe     Ruth    BOS   1915  4
+## 3       Babe     Ruth    BOS   1916  3
+## 4       Babe     Ruth    BOS   1917  2
+## 5       Babe     Ruth    BOS   1918 11
+## 6       Babe     Ruth    BOS   1919 29
+## 7       Babe     Ruth    NYA   1920 54
+## 8       Babe     Ruth    NYA   1921 59
+## 9       Babe     Ruth    NYA   1922 35
+## 10      Babe     Ruth    NYA   1923 41
+## 11      Babe     Ruth    NYA   1924 46
+## 12      Babe     Ruth    NYA   1925 25
+## 13      Babe     Ruth    NYA   1926 47
+## 14      Babe     Ruth    NYA   1927 60
+## 15      Babe     Ruth    NYA   1928 54
+## 16      Babe     Ruth    NYA   1929 46
+## 17      Babe     Ruth    NYA   1930 49
+## 18      Babe     Ruth    NYA   1931 46
+## 19      Babe     Ruth    NYA   1932 41
+## 20      Babe     Ruth    NYA   1933 34
+## 21      Babe     Ruth    NYA   1934 22
+## 22      Babe     Ruth    BSN   1935  6</code></pre>
+<hr />
+<p>Find all instances of players hitting more than 50 homeruns. Give first &amp; last names, teamID, yearID, and HR. Let’s put players with most HR at the top:</p>
+<pre class="r"><code>query&lt;-&quot;SELECT nameFirst, nameLast, teamID, yearID, HR, weight
+FROM Batting INNER JOIN Master
+ON Batting.playerID=Master.playerID
+WHERE Batting.HR &gt; 50
+ORDER BY HR DESC&quot;
+sqldf(query)</code></pre>
+<pre><code>##    nameFirst  nameLast teamID yearID HR weight
+## 1      Barry     Bonds    SFN   2001 73    185
+## 2       Mark   McGwire    SLN   1998 70    215
+## 3      Sammy      Sosa    CHN   1998 66    165
+## 4       Mark   McGwire    SLN   1999 65    215
+## 5      Sammy      Sosa    CHN   2001 64    165
+## 6      Sammy      Sosa    CHN   1999 63    165
+## 7      Roger     Maris    NYA   1961 61    197
+## 8       Babe      Ruth    NYA   1927 60    215
+## 9       Babe      Ruth    NYA   1921 59    215
+## 10    Jimmie      Foxx    PHA   1932 58    195
+## 11      Hank Greenberg    DET   1938 58    210
+## 12      Ryan    Howard    PHI   2006 58    250
+## 13      Luis  Gonzalez    ARI   2001 57    180
+## 14      Alex Rodriguez    TEX   2002 57    230
+## 15      Hack    Wilson    CHN   1930 56    190
+## 16       Ken   Griffey    SEA   1997 56    195
+## 17       Ken   Griffey    SEA   1998 56    195
+## 18      Babe      Ruth    NYA   1920 54    215
+## 19      Babe      Ruth    NYA   1928 54    215
+## 20     Ralph     Kiner    PIT   1949 54    195
+## 21    Mickey    Mantle    NYA   1961 54    195
+## 22     David     Ortiz    BOS   2006 54    230
+## 23      Alex Rodriguez    NYA   2007 54    230
+## 24      Jose  Bautista    TOR   2010 54    205
+## 25     Chris     Davis    BAL   2013 53    230
+## 26    Mickey    Mantle    NYA   1956 52    195
+## 27    Willie      Mays    SFN   1965 52    170
+## 28    George    Foster    CIN   1977 52    180
+## 29      Mark   McGwire    OAK   1996 52    215
+## 30      Alex Rodriguez    TEX   2001 52    230
+## 31       Jim     Thome    CLE   2002 52    250
+## 32     Ralph     Kiner    PIT   1947 51    195
+## 33    Johnny      Mize    NY1   1947 51    215
+## 34    Willie      Mays    NY1   1955 51    170
+## 35     Cecil   Fielder    DET   1990 51    230
+## 36    Andruw     Jones    ATL   2005 51    225</code></pre>
+<hr />
+<p>This is how to look at Babe Ruth’s career stats with his team name rather than teamID. We are combining three tables into one:</p>
+<pre class="r"><code>query&lt;-&quot;SELECT playerID, name, Batting.yearID, Batting.HR
+FROM Batting INNER JOIN Teams
+ON Batting.teamID=Teams.teamID AND Batting.yearID=Teams.yearID
+WHERE playerID='ruthba01'
+ORDER BY Batting.HR DESC&quot;
+sqldf(query)</code></pre>
+<pre><code>##    playerID             name yearID HR
+## 1  ruthba01 New York Yankees   1927 60
+## 2  ruthba01 New York Yankees   1921 59
+## 3  ruthba01 New York Yankees   1920 54
+## 4  ruthba01 New York Yankees   1928 54
+## 5  ruthba01 New York Yankees   1930 49
+## 6  ruthba01 New York Yankees   1926 47
+## 7  ruthba01 New York Yankees   1924 46
+## 8  ruthba01 New York Yankees   1929 46
+## 9  ruthba01 New York Yankees   1931 46
+## 10 ruthba01 New York Yankees   1923 41
+## 11 ruthba01 New York Yankees   1932 41
+## 12 ruthba01 New York Yankees   1922 35
+## 13 ruthba01 New York Yankees   1933 34
+## 14 ruthba01   Boston Red Sox   1919 29
+## 15 ruthba01 New York Yankees   1925 25
+## 16 ruthba01 New York Yankees   1934 22
+## 17 ruthba01   Boston Red Sox   1918 11
+## 18 ruthba01    Boston Braves   1935  6
+## 19 ruthba01   Boston Red Sox   1915  4
+## 20 ruthba01   Boston Red Sox   1916  3
+## 21 ruthba01   Boston Red Sox   1917  2
+## 22 ruthba01   Boston Red Sox   1914  0</code></pre>
 </div>
 
 
