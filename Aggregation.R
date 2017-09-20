@@ -1,4 +1,4 @@
-#AGGREGATION
+#AGGREGATION - September 14th, 2017
 # 1. Find Babe Ruth's career homerun totals
 query<-"SELECT playerID, sum(HR) FROM Batting
 WHERE playerID='ruthba01'
@@ -16,7 +16,8 @@ sqldf(query)
 
 
 #3.Find the players who averaged more than 30 homeruns per season over their career. Put those with the highest averages at the top.
-query<-"SELECT playerID, avg(HR) FROM Batting
+query<-"SELECT playerID, avg(HR) 
+FROM Batting
 GROUP BY playerID
 HAVING avg(HR)>30
 ORDER BY avg(HR) DESC"
@@ -46,3 +47,13 @@ WHERE playerID='ruthba01'
 ORDER BY Batting.HR DESC"
 sqldf(query)
 
+#-------September 19th, 2017------------------
+#1. Find all the players named Bob who averaged more than one million dollars per year in salary for their careers, including last names.
+query<-"SELECT nameFirst, nameLast, avg(salary)
+FROM Salaries INNER JOIN Master
+ON Salaries.playerID=Master.playerID
+WHERE nameFirst='Bob'
+GROUP BY Salaries.playerID
+HAVING avg(salary)>1000000
+ORDER BY avg(salary) DESC"
+sqldf(query)
